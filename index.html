@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TipsNote : GitHub Pages Sample</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/marx/2.0.4/marx.css">
+</head>
+
+<body>
+
+<link rel="stylesheet" href="https://enebular.com/emi/enebular-infomotion/css/app.css">
+            
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+            
+<script src="https://cdn.mlkcca.com/v2.0.0/milkcocoa.js"></script>
+            
+<script src="https://enebular.com/emi/enebular-infomotion/infomotion.js"></script>
+            
+<script src="https://enebular.com/emi/enebular-infomotion/infomotionUI.js"></script>
+            
+<style>
+            .container {
+              padding-right: 15px;
+              padding-left: 15px;
+              margin-right: auto;
+              margin-left: auto;
+            }
+            .hover-bg-gradient:hover, .hover-bg-gradient:focus {
+              background-color: #313131;
+            }
+            
+            .hover-bg-gradient {
+              background-image: linear-gradient(45deg, rgba(81, 81, 81, 0) 0%, #000 100%);
+              background-color: #515151;
+            }
+            
+            .bg-gradient {
+                background: linear-gradient(-10deg, #515151 0%, #000 100%);
+            }
+            
+            .btn-dashboard-primary {
+                color: #ffffff;
+                font-weight: 300;
+                transition: background-color .2s ease-in;
+                transition-property: background-color,color;
+            }
+            
+            .graph-date-picker {
+              text-align: right;
+            }
+            
+            .enebular-datepicker {
+                border-radius: 1px;
+                border: 1px solid #F2F3F4;
+                color: #646e6f;
+                font-weight: 300;
+                padding: 12px 17px;
+                width: 50%;
+            }
+            
+            .graph-date-picker #datePicker {
+                padding: 8px 0 8px 8px;
+                width: 100%
+            }
+            
+            .infomotion-timeline {
+                margin-top: 60px;
+            }
+            
+            .action-control-wrapper {
+                width: 70px;
+                float: left;
+            }
+            
+            .timeline-wrapper {
+                width: calc(100% - 70px);
+                float: left;
+                padding-top: 15px;
+                padding-right: 15px;
+            }
+            
+            .control-live {
+                float: left;
+                width: 60px;
+                margin-top: 62px;
+            }
+            
+            .control-timeline {
+                width: calc(100% - 60px);
+                float: left;
+            }
+
+            .infomotion-graph-0{
+                  width: 600px;
+                  height: 400px;
+            }
+            
+            @media (max-width: 768px) {
+              .infomotion-graph {
+                width: 100%;
+                transform: none;
+                position: inherit;
+                padding-bottom: 10px;
+              }
+            }
+            
+            @media (min-width: 768px) {
+              .container {
+                width: 750px;
+              }
+
+            }
+
+            @media (min-width: 992px) {
+              .container {
+                width: 970px;
+              }
+            }
+
+            @media (min-width: 1200px) {
+              .container {
+                width: 1170px;
+              }
+            }
+
+            </style>
+            
+<div class="container">
+                
+  <div class="graph-date-picker">
+                    
+    <input id="enebularDatePicker" class="enebular-datepicker" type="date">
+                
+  </div>
+                
+  <div class="enebular-clear-both"></div>
+                
+  <div class="control-live">
+                    
+    <button id="btnLive" class="enebular-btn">
+                        
+      <i class="fa fa-bolt fa-lg"></i>
+                    
+    </button>
+                
+  </div>
+                
+  <div class="control-timeline">
+                    
+    <div class="infomotion-timeline">
+                        
+      <div class="action-control-wrapper">
+                            
+        <button id="btnControl" class="enebular-btn enebular-btn-control hover-bg-gradient bg-gradient">
+                                
+          <i class="fa fa-play"></i>
+                            
+        </button>
+                        
+      </div>
+                        
+      <div class="timeline-wrapper" id="timeline"></div>
+                        
+      <div class="enebular-clear-both"></div>
+                    
+    </div>
+                
+  </div>
+                
+  <div class="enebular-clear-both"></div>
+            
+  <div class="infomotion-graph infomotion-graph-0" id="graph0"></div>
+            
+</div>
+            
+<script>
+            var settings = {
+                "cache": "blackhole",
+                "dateRange": [new Date('Wed Oct 24 2018 23:59:00 GMT+0900'), new Date('Sat Oct 27 2018 23:59:00 GMT+0900')],
+                "options": {"pluginPath":"https://enebular.com","iframePath":"/emi/iframe/iframe.html","plugins":[{"title":"linechart","name":"a6d189a1-2a9a-4b72-9a24-7366cecffa08","jsPath":"api/v1/infotype/a6d189a1-2a9a-4b72-9a24-7366cecffa08/download?ext=js","cssPath":"api/v1/infotype/a6d189a1-2a9a-4b72-9a24-7366cecffa08/download?ext=css"}],"loadingMode":"loadScript"}
+            }
+
+            var graphContext = infomotion.graphContext(settings);
+
+            var datePicker = infomotionUI.datePicker(document.querySelector('#enebularDatePicker'))
+            .make();
+
+            var timeline = infomotionUI.timeline(
+                    document.querySelector('#timeline'),
+                    document.querySelector('#btnControl')
+            ).setTheme('black').make();
+
+            var liveButton = infomotionUI.liveButton(document.querySelector('#btnLive'))
+                .make();
+
+            graphContext
+                .useTimeline(timeline)
+                .useLiveButton(liveButton)
+                .useDatePicker(datePicker)
+            
+            var settingGraph0 = {"adapter":{"type":"firebase","options":{"ref":"/fitbit","limit":100,"firebase":{"apiKey":"AIzaSyAH5AaTWBUOt2bq3iPvqyBf0Pr-pCk8G1Q","projectId":"heartrate-fitbit","authDomain":"heartrate-fitbit.firebaseapp.com","databaseURL":"https://heartrate-fitbit.firebaseio.com","storageBucket":"heartrate-fitbit.appspot.com","messagingSenderId":"103662202921"}}},"graph":{"d":"9c5c64c5-f896-431c-ab48-66d612301df8","n":"Heart Rate Chart","s":{"label":"category","limit":"all","value":"heartRate"},"t":"a6d189a1-2a9a-4b72-9a24-7366cecffa08","v":[]},"options":{"pluginPath":"https://enebular.com","iframePath":"https://s3-ap-northeast-1.amazonaws.com/enebular-infomotion/iframe.html","plugins":[{"title":"linechart","name":"a6d189a1-2a9a-4b72-9a24-7366cecffa08","jsPath":"api/v1/infotype/a6d189a1-2a9a-4b72-9a24-7366cecffa08/download?ext=js","cssPath":"api/v1/infotype/a6d189a1-2a9a-4b72-9a24-7366cecffa08/download?ext=css"}],"loadingMode":"loadScript"}}
+
+          var graph0 = infomotionUI.graph(document.querySelector('#graph0'), settingGraph0);
+                  
+                  graph0.render();
+                  graphContext.useGraphs(graph0);
+                  graph0.useFilter([])
+            </script>
+</body>
+</html>
